@@ -1,0 +1,377 @@
+/* src/custom.css */
+
+/* Global styling and animations */
+:root {
+    --happy-color: #fbbf24;
+    --sad-color: #60a5fa;
+    --neutral-color: #9ca3af;
+    --primary-color: #4f46e5;
+    --primary-light: #818cf8;
+    --background-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    --pink-gradient: linear-gradient(135deg, #e83e8c, #fd7e14);
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  /* Animated background */
+  .mood-gradient-bg {
+    background: var(--background-gradient);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Card styling */
+  .mood-card {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .mood-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Button styling */
+  .mood-button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mood-button::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.6s ease;
+  }
+  
+  .mood-button:hover::after {
+    left: 100%;
+  }
+  
+  .mood-button-primary {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .mood-button-primary:hover {
+    background-color: var(--primary-light);
+  }
+  
+  .mood-button-secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .mood-button-secondary:hover {
+    background-color: #f9fafb;
+  }
+  
+  /* Settings icon styling */
+  .settings-icon {
+    background-color: white;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .settings-icon:hover {
+    transform: rotate(30deg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Privacy policy button styling */
+  .privacy-button {
+    background-color: white;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  
+  .privacy-button:hover {
+    background-color: #f8f8f8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  /* Start detection button styling - to match your pink theme */
+  .detection-button {
+    background: var(--pink-gradient);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(232, 62, 140, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .detection-button:hover {
+    box-shadow: 0 6px 14px rgba(232, 62, 140, 0.4);
+    transform: translateY(-2px);
+  }
+  
+  .detection-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 6px rgba(232, 62, 140, 0.3);
+  }
+  
+  /* Mood icons with animations */
+  .mood-icon {
+    transition: all 0.3s ease;
+  }
+  
+  .mood-icon:hover {
+    transform: scale(1.2);
+  }
+  
+  .mood-icon-happy {
+    color: var(--happy-color);
+  }
+  
+  .mood-icon-happy:hover {
+    transform: scale(1.2) rotate(10deg);
+  }
+  
+  .mood-icon-sad {
+    color: var(--sad-color);
+  }
+  
+  .mood-icon-sad:hover {
+    transform: scale(1.2) rotate(-10deg);
+  }
+  
+  .mood-icon-neutral {
+    color: var(--neutral-color);
+  }
+  
+  .mood-icon-large {
+    width: 56px;
+    height: 56px;
+  }
+  
+  /* Camera styling */
+  .camera-container {
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 0 4px white, 0 0 0 8px var(--primary-color), 0 0 30px rgba(0, 0, 0, 0.3);
+    width: 280px;
+    height: 280px;
+    margin: 0 auto;
+  }
+  
+  .camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .countdown-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    font-size: 6rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Activity cards */
+  .activity-card {
+    border-radius: 12px;
+    border-left: 4px solid transparent;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .activity-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .activity-card-happy {
+    border-color: var(--happy-color);
+  }
+  
+  .activity-card-sad {
+    border-color: var(--sad-color);
+  }
+  
+  .activity-card-neutral {
+    border-color: var(--neutral-color);
+  }
+  
+  /* Timer styling */
+  .activity-timer {
+    font-size: 3rem;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    color: var(--primary-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Mood history bars */
+  .mood-bar-container {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+  }
+  
+  .mood-bar {
+    height: 100%;
+    transition: width 0.5s ease;
+  }
+  
+  .mood-bar-happy {
+    background-color: var(--happy-color);
+  }
+  
+  .mood-bar-sad {
+    background-color: var(--sad-color);
+  }
+  
+  .mood-bar-neutral {
+    background-color: var(--neutral-color);
+  }
+  
+  /* Modal styling */
+  .mood-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+  }
+  
+  .mood-modal.show {
+    opacity: 1;
+  }
+  
+  .mood-modal-content {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+  }
+  
+  .mood-modal.show .mood-modal-content {
+    transform: translateY(0);
+  }
+  
+  /* Charts and stats styling */
+  .mood-chart {
+    padding: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .mood-chart tspan {
+    font-size: 12px;
+  }
+  
+  /* Loading spinner */
+  .mood-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(79, 70, 229, 0.2);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spinner 1s linear infinite;
+  }
+  
+  @keyframes spinner {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Animations */
+  .fade-in {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .slide-up {
+    animation: slideUp 0.5s ease forwards;
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .camera-container {
+      width: 220px;
+      height: 220px;
+    }
+    
+    .activity-timer {
+      font-size: 2.5rem;
+    }
+    
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+  }
