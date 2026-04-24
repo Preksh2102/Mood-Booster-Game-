@@ -71,11 +71,33 @@ const MoodBoosterGame = () => {
   
   // Handle video element from CameraView when countdown completes
   const handleVideoReady = async (videoElement) => {
-    // Wait a moment to ensure the video is fully initialized
-    setTimeout(async () => {
-      try {
-        // Use the advanced detection with multiple samples
-        const result = await detectFacialExpressionAdvanced(videoElement, 5);
+    const waitForVideoReady = async (video, timeoutMs = 3000) => {
+      const start = Date.now();
+      while (Date.now() - start < timeoutMs) {
+        if (video && video.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0) return true;
+        await new Promise(r => setTimeout(r, 50));
+      }
+      return false;
+    };
+
+    const withTimeout = (promise, timeoutMs = 8000) => {
+      let timeoutId;
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error('DETECTION_TIMEOUT')), timeoutMs);
+      });
+      return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timeoutId));
+    };
+
+    try {
+      const ready = await waitForVideoReady(videoElement, 4000);
+      if (!ready) {
+        setError("Camera stream wasn’t ready in time. Please try again.");
+        setGamePhase('start');
+        return;
+      }
+
+      // Use the advanced detection with multiple samples, but don't let it hang forever
+      const result = await withTimeout(detectFacialExpressionAdvanced(videoElement, 5), 10000);
         
         if (result && result.error) {
           // Handle detection errors
@@ -142,12 +164,15 @@ const MoodBoosterGame = () => {
           setError("Something went wrong with mood detection. Please try again.");
           setGamePhase('start');
         }
-      } catch (err) {
-        console.error("Error in handleVideoReady:", err);
+    } catch (err) {
+      console.error("Error in handleVideoReady:", err);
+      if (err?.message === 'DETECTION_TIMEOUT') {
+        setError("Mood detection took too long. Please try again (better lighting helps).");
+      } else {
         setError("An unexpected error occurred. Please try again.");
-        setGamePhase('start');
       }
-    }, 500);
+      setGamePhase('start');
+    }
   };
   // Handle any errors during detection process
   // Handle activity completion

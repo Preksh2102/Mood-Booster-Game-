@@ -4,6 +4,7 @@ const CameraView = ({ onCountdownComplete, onBack }) => {
   const [cameraPermission, setCameraPermission] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const [errorMessage, setErrorMessage] = useState("");
+  const [analyzing, setAnalyzing] = useState(false);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const timerRef = useRef(null);
@@ -22,6 +23,7 @@ const CameraView = ({ onCountdownComplete, onBack }) => {
   const setupCamera = useCallback(async () => {
     stopCurrentStream();
     setCameraPermission(false);
+    setAnalyzing(false);
 
     try {
       // Basic capability + security checks (hosted sites commonly fail here)
@@ -54,6 +56,7 @@ const CameraView = ({ onCountdownComplete, onBack }) => {
 
       setErrorMessage("");
       setCameraPermission(true);
+      setAnalyzing(false);
 
       // Start countdown
       timerRef.current = setInterval(() => {
@@ -61,10 +64,13 @@ const CameraView = ({ onCountdownComplete, onBack }) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
             timerRef.current = null;
+            setAnalyzing(true);
             if (videoRef.current && videoRef.current.readyState >= 2) {
-              onCountdownComplete(videoRef.current);
+              // yield one frame so UI updates from "0" to "Analyzing..."
+              requestAnimationFrame(() => onCountdownComplete(videoRef.current));
             } else {
               setErrorMessage("Camera is not ready yet. Please try again.");
+              setAnalyzing(false);
             }
             return 0;
           }
@@ -123,7 +129,7 @@ const CameraView = ({ onCountdownComplete, onBack }) => {
               className="camera-video"
             />
             <div className="countdown-overlay">
-              {countdown}
+              {analyzing ? 'Analyzing…' : countdown}
             </div>
           </div>
           <p style={{ textAlign: 'center', color: '#4b5563' }}>
