@@ -12,7 +12,6 @@ const MoodBoosterGame = () => {
   const [mood, setMood] = useState('neutral');
   const [activity, setActivity] = useState(null);
   const [error, setError] = useState(null);
-  const [modelsLoaded, setModelsLoaded] = useState(false);
   const [moodHistory, setMoodHistory] = useState([]);
   const [completedActivities, setCompletedActivities] = useState([]);
 
@@ -20,7 +19,6 @@ const MoodBoosterGame = () => {
   useEffect(() => {
     const initializeFaceDetection = async () => {
       const loaded = await loadModels();
-      setModelsLoaded(loaded);
       setGamePhase(loaded ? 'start' : 'error');
       if (!loaded) {
         setError("Failed to load facial detection models. Please refresh the page or try a different browser.");
@@ -152,11 +150,6 @@ const MoodBoosterGame = () => {
     }, 500);
   };
   // Handle any errors during detection process
-  const handleError = (errorMessage) => {
-    setError(errorMessage);
-    setGamePhase('start');
-  };
-  
   // Handle activity completion
   const handleActivityComplete = (completedActivity) => {
     setCompletedActivities(prev => [
@@ -206,7 +199,7 @@ const MoodBoosterGame = () => {
         return <StartScreen onStart={startDetection} />;
         
       case 'detecting':
-        return <CameraView onCountdownComplete={handleVideoReady} onError={handleError} />;
+        return <CameraView onCountdownComplete={handleVideoReady} onBack={resetGame} />;
         
       case 'suggestion':
         return (
