@@ -98,46 +98,85 @@ const CameraView = ({ onCountdownComplete, onBack }) => {
   }, [setupCamera, stopCurrentStream]);
   
   return (
-    <div className="flex flex-col items-center justify-center space-y-6">
-      <h2 className="text-2xl font-bold text-center">Detecting Your Mood...</h2>
+    <div
+      className="camera-view"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '24px'
+      }}
+    >
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, textAlign: 'center' }}>
+        Detecting Your Mood...
+      </h2>
       
       {cameraPermission ? (
         <>
-          <div className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500">
+          <div className="camera-container">
             <video 
               ref={videoRef} 
               autoPlay 
               playsInline
               muted
-              className="absolute inset-0 min-w-full min-h-full object-cover"
+              className="camera-video"
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-              <span className="text-6xl font-bold text-white">{countdown}</span>
+            <div className="countdown-overlay">
+              {countdown}
             </div>
           </div>
-          <p className="text-center text-gray-600">
+          <p style={{ textAlign: 'center', color: '#4b5563' }}>
             Please look at the camera with your natural expression.
           </p>
         </>
       ) : (
-        <div className="text-center p-4 bg-red-50 rounded-lg max-w-md">
-          <p className="text-red-600 font-bold mb-2">Camera access is needed for mood detection.</p>
-          <p className="text-red-500">{errorMessage || "Please allow camera access in your browser settings."}</p>
-          <div className="mt-4 flex items-center justify-center gap-3">
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '16px',
+            background: '#fef2f2',
+            borderRadius: '12px',
+            maxWidth: '28rem'
+          }}
+        >
+          <p style={{ color: '#dc2626', fontWeight: 700, marginBottom: '8px' }}>
+            Camera access is needed for mood detection.
+          </p>
+          <p style={{ color: '#ef4444' }}>
+            {errorMessage || "Please allow camera access in your browser settings."}
+          </p>
+          <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center', gap: '12px' }}>
             <button
               onClick={() => {
                 setCountdown(3);
                 setErrorMessage("");
                 setupCamera();
               }}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors"
+              style={{
+                background: '#3b82f6',
+                color: 'white',
+                fontWeight: 700,
+                padding: '10px 16px',
+                borderRadius: '10px',
+                border: 'none',
+                cursor: 'pointer'
+              }}
             >
               Try again
             </button>
             {typeof onBack === 'function' && (
               <button
                 onClick={onBack}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition-colors"
+                style={{
+                  background: '#e5e7eb',
+                  color: '#1f2937',
+                  fontWeight: 700,
+                  padding: '10px 16px',
+                  borderRadius: '10px',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
               >
                 Back
               </button>
